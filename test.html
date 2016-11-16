@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+        <title>JS Grid</title>
+        <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.2/jsgrid.min.css" />
+        <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.2/jsgrid-theme.min.css" />
+        
+        <script type="text/javascript" src="http://www.mash5.cn/src/xiaowo/jquery.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.2/jsgrid.min.js"></script>
+        
+        <style type="text/css">
+            body{
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="jsGrid">
+        </div>
+        
+        <script type="text/javascript">
+
+        var jsGrid = $("#jsGrid").jsGrid({
+            height: "600px",
+            width: "100%",
+            paging: true,
+            autoload: true,
+            pageSize: 25,
+            pageButtonCount: 5,
+            filtering:true,
+            pageLoading:true,
+
+            controller: {
+                loadData: function(filter) {
+                    console.log(filter);
+                    var params = {
+                        'page.curPage': filter.pageIndex,
+                        'page.perPageSize': filter.pageSize,
+                        'method.name': 'mash5.tenant.queryCustomerTableData',
+                        'query.tableName': 'UserDefined',
+                        'query.type': '1004',
+                        'query.departmentID': filter.departmentID || undefined,
+                        'user.sessionId': '457843090533644614758292bb10cf2810ec440b849'
+                    };
+
+                    var d = $.Deferred();
+                    $.ajax({
+                        type: 'POST',
+                        url: 'http://www.mash5.cc/mashWebServices/service/mash5/rest',
+                        dataType: 'json',
+                        data: params
+                    }).done(function(r) {
+                        d.resolve({
+                            data: r.object,
+                            itemsCount: r.pageInfo.total
+                        });
+                    })
+                    return d.promise();
+                }
+            },
+            fields: [{
+                title:'资产编号',
+                name: "departmentID",
+                type: "number",
+                width: 200,
+                filtering:true
+            },{
+                title:'资产码',
+                name: "departmentCode",
+                type: "text",
+                width: 150,
+                filtering:false
+            }, {
+                title:'资产名',
+                name: "departmentName",
+                type: "number",
+                width: 150,
+                filtering:false
+            }, { type: "control" }]
+
+        });
+        </script>
+    </body>
+</html>
