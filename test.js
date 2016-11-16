@@ -6,6 +6,8 @@ var a = {
 
 var name = a.name;
 
+console.log(name);
+
 var source = {
 	name: '李彦朋',
 	obj: {
@@ -45,6 +47,7 @@ for (var key in a) {
 				}
 			}
 			a[key] = next;
+		B
 		}
 	}
 }
