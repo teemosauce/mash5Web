@@ -6,7 +6,7 @@ var a = {
 
 var name = a.name;
 
-console.log(name);
+console.log(name, name);
 
 var source = {
 	name: '李彦朋',
